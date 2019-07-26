@@ -1,19 +1,239 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
-<title>bruh</title>
+<title>The Dungeon</title>
 <link rel="stylesheet" type="text/css" href="styles.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="script.js"></script>
 
+
+<script>
+  function delayedNav(){
+    $("#navUI").fadeIn(0);
+}
+$(function (){
+
+//start screen transfer
+$(".toCharSelect").click(function(){
+    $("#titleFade").fadeOut(0);
+    $("#charFade").fadeIn(0);
+  });
+//end screen transfer (charMenu, charScreen do fadeIn)
+var currentHP = 0;
+var currentMP = 0;
+
+var userHealthDisplay_ALL = document.getElementsByClassName("userHealthDisplay");
+
+var userMagicDisplay_ALL = document.getElementsByClassName("userMagicDisplay");
+
+var lichHealthDisplay_ALL = document.getElementsByClassName("enemyHealth");
+
+var currentLichHealth = 150;
+
+var lichHealth = 150;
+
+function callLichHealth(){
+
+  for (var i = 0; i < lichHealthDisplay_ALL.length; i++) {
+      lichHealthDisplay_ALL[i].innerHTML = "HP: " + currentLichHealth + " / " + lichHealth;
+    }
+
+}
+
+function callUserHealth(){
+  for (var i = 0; i < userHealthDisplay_ALL.length; i++) {
+      userHealthDisplay_ALL[i].innerHTML = "HP: " + currentHP + " / " + userHP;
+    }
+}//end callhealth
+
+function callUserMagic(){
+  for (var i = 0; i < userMagicDisplay_ALL.length; i++) {
+      userMagicDisplay_ALL[i].innerHTML = "MP: " + currentMP + " / " + userMP;
+    }
+    //end callmagic
+}
+
+$("#choosechar").click(function(){
+    $("#charFade").fadeOut(1000);
+
+    currentHP += userHP;
+
+    var userHealthDisplay_ALL = document.getElementsByClassName("userHealthDisplay");
+
+    callUserHealth();
+
+
+currentMP += userMP;
+  
+callUserMagic();
+
+
+    setTimeout(function delayedNav(){$("#statsNstuff").fadeIn(0);}, 1000);
+
+  });
+$("#toRoomB").click(function(){
+
+$("#statsNstuff").fadeOut(800);
+setTimeout(  function(){$("#statsNstuff").fadeIn(0);}, 800);
+$("#toRoomB").fadeOut(0);
+setTimeout(function(){document.getElementById("infobar").style.color = "red";}, 800);
+setTimeout(function(){document.getElementById("infobar").innerHTML = "You encountered the dungeon boss; the Lich King!";}, 800);
+setTimeout(function(){$("#skeletonBattle").fadeIn(0);}, 800);
+});
+
+$("#skeletonBattle").click(function(){
+$("#statsNstuff").fadeOut(0);
+$("#combatUI").fadeIn(0);
+callLichHealth();
+});
+//CODE IN PROGRESS!!!!!! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+$("#attackTrig").click(function(){
+currentHP = currentHP - 20;
+if(currentHP < 0){
+  currentHP = 0;
+}
+  //if(currentHP <= 0){
+  //(load death screen funct)
+  //}
+callUserHealth();
+
+yourChoice = $("#dropdown").val();
+console.log(yourChoice);
+
+if(currentLichHealth > 0){
+  
+}
+currentLichHealth = currentLichHealth - userDMG;
+callLichHealth();
+
+});
+
+
+
+$("#specTrig").click(function(){
+  console.log(currentMP);
+  if(currentMP <=0){
+    return;
+  }
+  console.log(currentMP);
+currentHP = currentHP - 20;
+if(currentHP < 0){
+  currentHP = 0;
+}
+  //if(currentHP <= 0){
+  //(load death screen funct)
+  //}
+callUserHealth();
+
+currentMP = currentMP - 10;
+if(currentMP < 0){
+  currentMP = 0;
+}
+callUserMagic();
+
+currentLichHealth = currentLichHealth - userSpecial;
+callLichHealth();
+});
+
+
+
+//START ALLIN FUNCTION BUTTON
+$("#allInTrig").click(function(){
+  if(currentMP <=0){
+    return;
+  }
+currentHP = currentHP - 20;
+if(currentHP < 0){
+  currentHP = 0;
+}
+  //if(currentHP <= 0){
+  //(load death screen funct)
+  //}
+callUserHealth();
+
+currentMP = currentMP - currentMP;
+if(currentMP < 0){
+  currentMP = 0;
+}
+
+callUserMagic();
+
+currentLichHealth = currentLichHealth - (userSpecial + currentMP);
+callLichHealth();
+});//END ALLIN BUTTON FUNCT
+
+});
+</script>
+
 </head>
-
-
 <body>
-<h1>My First Project</h1>
+    <div id="titleFade">
+<h1>The Dungeon</h1>
+<p>a short text-based RPG</p>
+<p class = "smaller">Select your character and clear the dungeon to win!</p>
+<p class = "smaller">Attack - attack the enemy</p>
+<p class = "smaller">Special - Use a special attack</p>
+<p class = "smaller">All-in - Consume remaining MP to use an empowered special attack</p>
+<p><button class = "toCharSelect">Start</button></p>
+</div>
+<!-- end start screen -->
 
 
+
+<!-- start character select screen -->
+
+<div id="charFade">
+
+<p>Select Character:</p>
+
+<select id = "dropdown">
+        <option value="warrior">Warrior</option>
+        <option value="knight">Knight</option>
+        <option value="berserker">Berserker</option>
+      </select>
+      <button id="choosechar" onclick="play()">Select</button>
+    </div>
+
+<!-- game start -->
+<div id="statsNstuff">
+
+<br><p class="userHealthDisplay">HP: 100 / 100</p>
+
+<p id="scoreBar">Current Score: 0</p>
+
+<p class="userMagicDisplay">MP: 80 / 80</p>
+<br>
+<!-- room 1 start -->
+<p class="middle" id="infobar">You have entered the dungeon. You hear an odd sound up ahead.</p>
+<p class="middle"><button id="toRoomB">Go Forward</button></p>
+<!-- room 1 end -->
+
+<!-- room 2 start -->
+<p class="middle"><button id = "skeletonBattle">Start Battle</button></p>
+</div>
+
+<!-- combat Ui definition -->
+<div id="combatUI">
+<p>Lich King</p>
+<p class="enemyHealth"> HP: 150 / 150</p>
+
+<br><br><p>John Smith</p>
+<p class="userHealthDisplay">HP: 100 / 100</p>
+<p class="userMagicDisplay">MP: 80 / 80</p><br>
+
+<button id="attackTrig">Attack</button><br>
+<button id="specTrig">Special</button><button id="allInTrig">All-in</button>
+
+
+
+
+</div>
+<!-- room 2 end -->
+
+<!-- game end, score screen -->
+
+<!-- <br><p>You have cleared the dungeon!</p>
+<h1>Your score: 0</h1> -->
 </body>
 
 </html>

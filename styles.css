@@ -1,3 +1,43 @@
-h1{
-    color:greenyellow;
+body{
+    font-family: helvetica;
+}
+
+#titleFade{
+    text-align:center;
+}
+
+    #charFade{
+display:none;
+text-align: center;
+    }
+#statsNstuff{
+    display:none;
+    margin-left:40px;
+}
+#userHealthDisplay{
+display:inline;
+vertical-align:top;
+}
+#userMagicDisplay{
+margin:0;
+    padding:0;
+}
+#scoreBar{
+    
+  float: right;
+    margin-top: 0px;
+    margin-right:40px;
+}
+.middle{
+    text-align: center;
+}
+#skeletonBattle{
+    display:none;
+}
+#combatUI{
+    display:none;
+    text-align: center;
+}
+.smaller{
+    font-size: 12px;
 }
